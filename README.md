@@ -14,7 +14,6 @@ See live demo: [inke-web](https://inke.app)
 npm install inke
 ```
 
-
 ## Setting Up Locally
 
 To set up Inke locally, you'll need to clone the repository and set up the following environment variables:
