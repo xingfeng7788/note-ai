@@ -6,7 +6,7 @@ See live demo: [inke-web](https://inke.app)
 
 <img alt="Inke is a Notion-style WYSIWYG editor with AI-powered autocompletions." src="https://inke.app/desktop.png">
 
-# Install pkg 
+# Install Inke
 
 ```bash
 npm install inkejs
@@ -32,7 +32,7 @@ pnpm dev
 Then, you can use it in your code like this:
 
 ```jsx
-import { Editor } from "inke";
+import { Editor } from "inkejs";
 
 export default function App() {
   return <Editor />;
@@ -72,6 +72,10 @@ Inke is built on the following stack:
 - [Vercel AI SDK](https://sdk.vercel.ai/docs) – AI library
 - [Vercel](https://vercel.com) – deployments
 - [TailwindCSS](https://tailwindcss.com/) – styles
+
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=yesmore/inke&type=Date)](https://star-history.com/#yesmore/inke&Date)
 
 ## License
 
