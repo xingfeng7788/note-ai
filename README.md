@@ -1,8 +1,21 @@
+<a href="https://www.npmjs.org/package/inkejs" target='_blank'>
+  <img src="https://img.shields.io/npm/v/inkejs">
+</a>
+<a href="https://npmcharts.com/compare/inkejs?minimal=true" target='_blank'>
+  <img src="https://img.shields.io/npm/dt/inkejs.svg">
+</a>
+<a href="https://github.com/yesmore/inke/blob/master/LICENSE">
+  <img src="https://img.shields.io/github/license/yesmore/inke?label=license&logo=github&color=f80&logoColor=fff" alt="License" />
+</a>
+<a href="https://inke.app">
+  <img src="https://badgen.net/https/inke.app/api/status" alt="status"/>
+</a>
+  
 # Inke
 
 Inke is a Notion-style WYSIWYG editor with AI-powered autocompletions.
 
-See live demo: [inke-web](https://inke.app)
+See live demo: [inke-web](https://inke.app)  
 
 <img alt="Inke is a Notion-style WYSIWYG editor with AI-powered autocompletions." src="https://inke.app/desktop.png">
 
