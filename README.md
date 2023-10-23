@@ -8,10 +8,8 @@ See live demo: [inke-web](https://inke.app)
 
 # Install pkg 
 
-> Coming soon
-
 ```bash
-npm install inke
+npm install inkejs
 ```
 
 ## Setting Up Locally
