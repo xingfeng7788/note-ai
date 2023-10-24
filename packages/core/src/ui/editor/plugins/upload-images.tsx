@@ -2,8 +2,6 @@ import { BlobResult } from "@vercel/blob";
 import { toast } from "sonner";
 import { EditorState, Plugin, PluginKey } from "@tiptap/pm/state";
 import { Decoration, DecorationSet, EditorView } from "@tiptap/pm/view";
-import { NovelContext } from "../provider";
-import { useContext } from "react";
 
 const uploadKey = new PluginKey("upload-image");
 
@@ -26,7 +24,7 @@ const UploadImagesPlugin = () =>
           const image = document.createElement("img");
           image.setAttribute(
             "class",
-            "opacity-40 rounded-lg border border-stone-200"
+            "opacity-40 rounded-md border border-stone-200"
           );
           image.src = src;
           placeholder.appendChild(image);
@@ -62,8 +60,8 @@ export function startImageUpload(file: File, view: EditorView, pos: number) {
   if (!file.type.includes("image/")) {
     toast.error("File type not supported.");
     return;
-  } else if (file.size / 1024 / 1024 > 5) {
-    toast.error(`File size too big (max ${15}MB).`);
+  } else if (file.size / 1024 / 1024 > 1) {
+    toast.error(`File size too big (max ${1}MB).`);
     return;
   }
 
@@ -111,7 +109,6 @@ export function startImageUpload(file: File, view: EditorView, pos: number) {
 }
 
 export const handleImageUpload = (file: File) => {
-  // upload to Vercel Blob
   return new Promise((resolve) => {
     toast.promise(
       fetch("/api/upload", {
@@ -125,6 +122,7 @@ export const handleImageUpload = (file: File) => {
         // Successfully uploaded image
         if (res.status === 200) {
           const { url } = (await res.json()) as BlobResult;
+
           // preload the image
           let image = new Image();
           image.src = url;
@@ -134,7 +132,6 @@ export const handleImageUpload = (file: File) => {
           // No blob store configured
         } else if (res.status === 401) {
           resolve(file);
-
           throw new Error(
             "`BLOB_READ_WRITE_TOKEN` environment variable not found, reading image locally instead."
           );
