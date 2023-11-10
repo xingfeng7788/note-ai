@@ -1,19 +1,18 @@
-import { Github } from "@/ui/icons";
-import Menu from "@/ui/menu";
-import Editor from "@/ui/editor";
+import Nav from "@/ui/layout/nav";
+import { Landing, Welcome } from "./features/guide";
+import Footer from "@/ui/layout/footer";
+import { getServerSession } from "next-auth";
+import { authOptions } from "./api/auth/[...nextauth]/route";
 
-export default function Page() {
+export default async function Page() {
+  const session = await getServerSession(authOptions);
   return (
-    <div className="flex min-h-screen flex-col items-center sm:px-5 sm:pt-[calc(20vh)]">
-      <a
-        href="https://github.com/yesmore/inke"
-        target="_blank"
-        className="absolute bottom-5 left-5 z-10 max-h-fit rounded-lg p-2 transition-colors duration-200 hover:bg-stone-100 sm:bottom-auto sm:top-5"
-      >
-        <Github />
-      </a>
-      <Menu />
-      <Editor />
+    <div className="mt-16 flex flex-col items-center sm:mx-6 sm:px-3">
+      {/* @ts-expect-error Server Component */}
+      <Nav />
+      <Welcome />
+      <Landing session={session} />
+      <Footer />
     </div>
   );
 }

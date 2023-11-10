@@ -20,6 +20,14 @@ import "./styles.css";
 import AIEditorBubble from "./bubble-menu/ai-selectors/edit/ai-edit-bubble";
 import AIGeneratingLoading from "./bubble-menu/ai-selectors/ai-loading";
 import AITranslateBubble from "./bubble-menu/ai-selectors/translate/ai-translate-bubble";
+import { ChatBot } from "./bot/chat-bot";
+import {
+  CollaborationInfo,
+  User,
+  generateRandomColorCode,
+  useCollaborationExt,
+} from "./extensions/collaboration";
+import { Users } from "lucide-react";
 
 export default function Editor({
   completionApi = "/api/generate",
@@ -34,6 +42,10 @@ export default function Editor({
   disableLocalStorage = false,
   editable = true,
   plan = "5",
+  bot = false,
+  collaboration = false,
+  id = "",
+  userName = "unkown",
 }: {
   /**
    * The API route to use for the OpenAI completion API.
@@ -97,7 +109,29 @@ export default function Editor({
    * Defaults to true.
    */
   editable?: boolean;
+  /**
+   * User plan.
+   * Defaults to "5".
+   */
   plan?: string;
+  /**
+   * Bot: chat with note.
+   * Defaults to false.
+   */
+  bot?: boolean;
+  /**
+   * Id: collaboration room id.
+   */
+  id?: string;
+  /**
+   * Collaboration: enable collaboration space.
+   * Defaults to false.
+   */
+  collaboration?: boolean;
+  /**
+   * userName: collaboration userName.
+   */
+  userName?: string;
 }) {
   const [content, setContent] = useLocalStorage(storageKey, defaultValue);
 
@@ -109,6 +143,7 @@ export default function Editor({
     const json = editor.getJSON();
     const text = editor.getText();
     const markdown = editor.storage.markdown.getMarkdown();
+    // const count = editor.storage.characterCount.characters();
 
     onDebouncedUpdate(json, text, markdown, editor);
 
@@ -117,8 +152,24 @@ export default function Editor({
     }
   }, debounceDuration);
 
+  const [status, setStatus] = useState("connecting");
+  const user = {
+    name: userName,
+    color: generateRandomColorCode(),
+  };
+
+  const { collaborates, provider } = useCollaborationExt(
+    collaboration,
+    id,
+    user
+  );
+
   const editor = useEditor({
-    extensions: [...defaultExtensions, ...extensions],
+    extensions: [
+      ...defaultExtensions(collaboration),
+      ...extensions,
+      ...(collaboration && collaborates ? collaborates : []),
+    ],
     editorProps: {
       ...defaultEditorProps,
       ...editorProps,
@@ -149,6 +200,16 @@ export default function Editor({
     autofocus: false,
   });
 
+  useEffect(() => {
+    if (collaboration) {
+      // Update status changes
+      provider.on("status", (event: any) => {
+        setStatus(event.status);
+        editor?.chain().focus().updateUser(user).run();
+      });
+    }
+  }, [editor]);
+
   const { complete, completion, isLoading, stop } = useCompletion({
     id: "ai-continue",
     api: `${completionApi}/continue`,
@@ -161,9 +222,6 @@ export default function Editor({
     },
     onError: (err) => {
       toast.error(err.message);
-      if (err.message === "You have reached your request limit for the day.") {
-        va.track("Rate Limit Reached");
-      }
     },
   });
 
@@ -210,6 +268,10 @@ export default function Editor({
             <AITranslateBubble editor={editor} />
           </>
         )}
+        {editor && collaboration && (
+          <CollaborationInfo status={status} editor={editor} />
+        )}
+
         {editor?.isActive("image") && <ImageResizer editor={editor} />}
         <EditorContent editor={editor} />
         {isLoadingOutside && isLoading && (
@@ -217,6 +279,7 @@ export default function Editor({
             <AIGeneratingLoading stop={stop} />
           </div>
         )}
+        {bot && editor && <ChatBot editor={editor} />}
       </div>
     </NovelContext.Provider>
   );

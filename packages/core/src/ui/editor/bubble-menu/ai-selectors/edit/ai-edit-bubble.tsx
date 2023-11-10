@@ -7,6 +7,7 @@ import { useContext, useEffect, useState } from "react";
 import { toast } from "sonner";
 import va from "@vercel/analytics";
 import { NovelContext } from "../../../provider";
+import ReactMarkdown from "react-markdown";
 
 type Props = {
   editor: Editor;
@@ -18,14 +19,11 @@ const AIEditorBubble: React.FC<Props> = ({ editor }: Props) => {
   const { completionApi, plan } = useContext(NovelContext);
 
   const { completion, setCompletion, isLoading, stop } = useCompletion({
-    id: "novel-edit",
+    id: "ai-edit",
     api: `${completionApi}/edit`,
     body: { plan },
     onError: (err) => {
       toast.error(err.message);
-      if (err.message === "You have reached your request limit for the day.") {
-        va.track("Rate Limit Reached");
-      }
     },
   });
 
@@ -49,10 +47,10 @@ const AIEditorBubble: React.FC<Props> = ({ editor }: Props) => {
   };
 
   return isShow || isLoading ? (
-    <div className="novel-fixed z-[1000] novel-bottom-3 novel-right-3 novel-p-3 novel-overflow-hidden novel-rounded novel-border novel-border-stone-200 novel-bg-white novel-shadow-xl novel-animate-in novel-fade-in novel-slide-in-from-bottom-1">
+    <div className="novel-fixed novel-z-[10000] novel-bottom-3 novel-right-3 novel-p-3 novel-overflow-hidden novel-rounded novel-border novel-border-stone-200 novel-bg-white novel-shadow-xl novel-animate-in novel-fade-in novel-slide-in-from-bottom-1">
       <div className="novel-w-64 novel-max-h-48 novel-overflow-y-auto">
         <div className=" novel-flex novel-gap-2 novel-items-center novel-text-slate-500">
-          <Magic className="novel-h-5 novel-animate-pulse novel-w-5 novel-text-purple-500" />
+          <Magic className="novel-h-5 novel-animate-pulse novel-w-5 novel-text-cyan-500" />
           {isLoading && (
             <div className="novel-mr-auto novel-flex novel-items-center">
               <LoadingDots color="#9e9e9e" />
@@ -82,8 +80,11 @@ const AIEditorBubble: React.FC<Props> = ({ editor }: Props) => {
             />
           </div>
         </div>
+
         {completion.length > 0 && (
-          <div className="novel-text-sm mt-2">{completion}</div>
+          <ReactMarkdown className="novel-text-sm mt-2">
+            {completion}
+          </ReactMarkdown>
         )}
       </div>
     </div>
