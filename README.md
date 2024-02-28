@@ -16,6 +16,8 @@
 
 # About Inke
 
+> 美国免备案vps，2核2G 配置仅需20.98$≈145RMB/年，支持支付宝付款，💁[点击优惠链接直达](https://my.racknerd.com/aff.php?aff=10906&pid=681)
+
 [Inke](https://inke.app/) is a notebook with AI assisted writing and real-time collaboration.
 
 <img alt="Inke is a Notion-style WYSIWYG editor with AI-powered autocompletions." src="https://inke.app/desktop.png">
