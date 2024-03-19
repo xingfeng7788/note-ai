@@ -7,7 +7,7 @@ import { Account_Plans } from "../../../../lib/consts";
 
 const api_key = process.env.OPENAI_API_KEY || "";
 const api_keys = process.env.OPENAI_API_KEYs || "";
-cost api_model = process.env.OPENAI_MODEL || "gpt-3.5-turbo"
+const api_model = process.env.OPENAI_MODEL || "gpt-3.5-turbo"
 const openai = new OpenAI({
   baseURL: process.env.OPENAI_API_PROXY || "https://api.openai.com",
 });
