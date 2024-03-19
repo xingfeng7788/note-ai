@@ -7,7 +7,7 @@ import { Account_Plans } from "../../../../lib/consts";
 
 const api_key = process.env.OPENAI_API_KEY || "";
 const api_keys = process.env.OPENAI_API_KEYs || "";
-
+const api_model = process.env.OPENAI_MODEL || "gpt-3.5-turbo"
 const openai = new OpenAI({
   baseURL: process.env.OPENAI_API_PROXY || "https://api.openai.com",
 });
@@ -64,7 +64,7 @@ export async function POST(req: Request): Promise<Response> {
     openai.apiKey = getRandomElement(api_keys.split(",")) || api_key;
 
     const response = await openai.chat.completions.create({
-      model: "gpt-3.5-turbo-16k",
+      model: api_model,
       messages: [
         {
           role: "system",
