@@ -9,7 +9,7 @@ const api_key = process.env.OPENAI_API_KEY || "";
 const api_keys = process.env.OPENAI_API_KEYs || "";
 const api_model = process.env.OPENAI_MODEL || "gpt-3.5-turbo"
 const openai = new OpenAI({
-  baseURL: process.env.OPENAI_API_PROXY || "https://api.openai.com",
+  baseURL: process.env.OPENAI_API_PROXY || "https://api.openai.com/v1",
 });
 
 // IMPORTANT! Set the runtime to edge: https://vercel.com/docs/functions/edge-functions/edge-runtime
