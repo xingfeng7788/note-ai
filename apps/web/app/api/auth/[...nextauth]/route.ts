@@ -27,21 +27,21 @@ export const authOptions: NextAuthOptions = {
       // server: process.env.EMAIL_SERVER,
       // from: process.env.EMAIL_FROM,
       server: {
-      host: process.env.EMAIL_SERVER_HOST,
-      port: Number(process.env.EMAIL_SERVER_PORT),
-      auth: {
-        user: process.env.EMAIL_SERVER_USER,
-        pass: process.env.EMAIL_SERVER_PASSWORD
-      }
-    },
+        host: process.env.EMAIL_SERVER_HOST,
+        port: Number(process.env.EMAIL_SERVER_PORT),
+        auth: {
+          user: process.env.EMAIL_SERVER_USER,
+          pass: process.env.EMAIL_SERVER_PASSWORD
+        }
+      },
       from: process.env.EMAIL_FROM,
       maxAge: 10 * 60, // 10min, 邮箱链接失效时间，默认24小时
-      sendVerificationRequest: async ({
+      async sendVerificationRequest({
         identifier: email,
         url,
         provider,
         theme,
-      }) => {
+      }) {
         const { host } = new URL(url);
         const transport = createTransport(provider.server);
         const result = await transport.sendMail({
@@ -55,7 +55,7 @@ export const authOptions: NextAuthOptions = {
         if (failed.length) {
           throw new Error(`Email(s) (${failed.join(", ")}) could not be sent`);
         }
-      },
+      },      
     }),
   ],
 };
