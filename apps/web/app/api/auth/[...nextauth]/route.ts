@@ -36,12 +36,12 @@ export const authOptions: NextAuthOptions = {
     },
       from: process.env.EMAIL_FROM
       // maxAge: 10 * 60, // 10min, 邮箱链接失效时间，默认24小时
-      sendVerificationRequest({
+      sendVerificationRequest: async ({
         identifier: email,
         url,
         provider,
         theme,
-      }) {
+      }) => {
         const { host } = new URL(url);
         const transport = createTransport(provider.server);
         const result = await transport.sendMail({
