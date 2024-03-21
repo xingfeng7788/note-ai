@@ -34,9 +34,9 @@ export const authOptions: NextAuthOptions = {
         pass: process.env.EMAIL_SERVER_PASSWORD
       }
     },
-    from: process.env.EMAIL_FROM
-      maxAge: 10 * 60, // 10min, 邮箱链接失效时间，默认24小时
-      async sendVerificationRequest({
+      from: process.env.EMAIL_FROM
+      // maxAge: 10 * 60, // 10min, 邮箱链接失效时间，默认24小时
+      sendVerificationRequest({
         identifier: email,
         url,
         provider,
